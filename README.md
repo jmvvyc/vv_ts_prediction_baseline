@@ -79,4 +79,4 @@ For example, the overall VideoVisit of the target drama program is projected bas
 
 # Baseline预测效果展示
   A榜Baseline预测效果演示  
-  ![A榜![](https://latex.codecogs.com/svg.image?36)个合集![](https://latex.codecogs.com/svg.image?7)天预测效果展示](png/comp_2022_cid_ts_vv_eval_movie.gif)
+  ![A榜![](https://latex.codecogs.com/svg.image?36)个合集![](https://latex.codecogs.com/svg.image?7)天预测效果展示](png/comp_2022_cid_ts_vv_eval_movie_small.gif)
