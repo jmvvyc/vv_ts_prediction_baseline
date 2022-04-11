@@ -1,0 +1,10 @@
+imageio
+matplotlib
+numpy
+pandas
+sklearn
+tqdm
+Prophet
+scikit-learn>=0.24 # sklearn.metrics.mean_absolute_percentage_error
+
+
