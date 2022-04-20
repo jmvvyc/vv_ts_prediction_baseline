@@ -1,5 +1,5 @@
 # 第三届“马栏山杯”国际音视频算法大赛-节目播放量预测"赛题简介
-* [赛题链接](http://devchallenge.ai.mgtv.com/contest/detail/13) 
+* [赛题链接](http://challenge.ai.mgtv.com/contest/detail/13) 
 * **说明**： 节目的播放量预测能帮助平台多项业务开展。比如提前进行服务资源准备以应对流量变化情况、辅助在线广告库存预估等。本赛题通过利用真实的节目播放数据，脱敏处理后，尽可能还原节目播放量预测的问题原型，使得选手们可以探索真实业务场景的有效解决方案，问题具体如下：基于前![](https://latex.codecogs.com/svg.image?T)天的节目播放数据、节目属性和时间上下文，预测未来一段时间节目的播放量  
 **Introduction**: Prediction of program on-demand ![](https://latex.codecogs.com/svg.image?VideoVisit) count plays an important role in the field of Internet data mining.   
 Programs with high on-demand (especially movies and TV series) can improve the coverage of online advertisements.   
