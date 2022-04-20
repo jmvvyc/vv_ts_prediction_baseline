@@ -56,13 +56,40 @@ out_path_comm_prefix = "comp_2022"
 sep_regex = r"[\t,]"
 test_sample_cnt = 7
 gif_delay = 0.4
-data_path = "out/comp_2022_cid_ts_vv_crypt_72in235_mape0.06-0.40_rank_a_chosen_data.tsv"
+y_col = "cid_day_vv_t"
 submit_out_cols = ["cid_t", "nth_day", "yhat"]
+data_path = "in/rank_a_data.tsv"
 
 
 installed_fonts = set([f.name for f in fm.fontManager.ttflist])
 logger.info("%d installed font is '%s'", len(
     installed_fonts), list(installed_fonts))
+
+
+def get_mMAPE(actual_df, submit_df):
+    global logger
+    mMAPE = sys.float_info.max
+    submit_df = submit_df.rename(columns={submit_df.columns[2]: 'yhat'})
+    try:
+        calc_df = submit_df[["cid_t", "nth_day", "yhat"]].merge(
+            actual_df[["cid_t", "nth_day", "y"]], on=["cid_t", "nth_day"], how="inner")
+        valid_cnt = calc_df.shape[0]
+        actual_cnt = actual_df.shape[0]
+        if valid_cnt < actual_cnt:
+            raise ValueError(
+                "submit has only %d EFFECTIVE rows while %d rows is required" % (valid_cnt, actual_cnt))
+        cid_grp_df = calc_df.groupby(["cid_t"])
+        mape_li = []
+        for _, cur_grp_df in cid_grp_df:
+            cur_actual = cur_grp_df["y"].astype(float)
+            cur_submit = cur_grp_df["yhat"].astype(float)
+            cur_mape = mean_absolute_percentage_error(cur_actual, cur_submit)
+            mape_li.append(cur_mape)
+        mMAPE = np.mean(mape_li)
+    except Exception as e:
+        logger.error("'%s'\n%d submit_df\n%s\n%d actual_df\n%s", str(e),
+                     submit_df.shape[0], submit_df.to_string(index=False), actual_df.shape[0], actual_df.to_string(index=False))
+    return mMAPE
 
 
 def usage():
@@ -177,8 +204,9 @@ def main():
     global tsv_out_path
     global sep_regex
     global gif_delay
-    global data_path
     global submit_out_cols
+    global data_path
+    global y_col
     if not os.path.exists(png_out_path):
         os.makedirs(png_out_path)
     if not os.path.exists(tsv_out_path):
@@ -189,7 +217,7 @@ def main():
     log_level = "INFO"
     try:
         opts, args = getopt.getopt(
-            sys.argv[1:], "h", ["help", "thread=", "input=", "ans=", "log-level="])
+            sys.argv[1:], "h", ["help", "thread=", "input=", "log-level="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print(str(err))  # will print something like "option -a not recognized"
@@ -206,9 +234,6 @@ def main():
             data_path = a
             logger.info("data_path='%s'", data_path)
             data_path_set = True
-        elif o in ("--ans"):
-            answer_path = a
-            logger.info("answer_path='%s'", answer_path)
         elif o in ("--log-level"):
             log_level = a.upper()
             logger.setLevel(log_level)
@@ -240,22 +265,22 @@ def main():
     start_dt = datetime.datetime.now()
     abs_data_path = os.path.abspath(data_path)
     raw_data_df = pd.read_csv(data_path, sep="\t", encoding="utf-8")
+    data_df = raw_data_df[raw_data_df[y_col] != 0] # cid_day_vv_t列为0的为待预测值，排除
     rand_day_delta = random.randint(1, 3*365)
     rand_start_dt = start_dt - datetime.timedelta(days=rand_day_delta)
     logger.debug("rand_start_dt '%s', rand_day_delta %d",
                  rand_start_dt.strftime(date_format), rand_day_delta)
     # 随机选1个日期作为起始日期， Prophet模型要求x轴为datetime或者date
-    raw_data_df["ds"] = raw_data_df["nth_day"].apply(
+    data_df["ds"] = data_df["nth_day"].apply(
         lambda cur_nth_d_val:  rand_start_dt + datetime.timedelta(days=cur_nth_d_val))
     end_dt = datetime.datetime.now()
-    raw_data_df = raw_data_df.astype({"cid_t": int, "nth_day": int})
-    logger.info("%d '%s' raw_data_df '%s' readed from '%s' in '%s'\n%s",
-                raw_data_df.shape[0], list(
-                    raw_data_df.columns), raw_data_df.dtypes.to_string(),
-                abs_data_path, end_dt-start_dt, raw_data_df.head().to_string(index=False))
+    data_df = data_df.astype({"cid_t": int, "nth_day": int})
+    logger.info("%d '%s' data_df '%s' readed from '%s' in '%s'\n%s",
+                data_df.shape[0], list(
+                    data_df.columns), data_df.dtypes.to_string(),
+                abs_data_path, end_dt-start_dt, data_df.head().to_string(index=False))
     fit_cols = ["nth_day", "ds", "y", "cid_t", "channelId_t", "leader_t",
                 "kind_t", "seriesId_t", "seriesNo"]
-    y_col = "cid_day_vv_t"
     y_lbl = "脱敏值"
     logger.info("fitting y column is '%s'(%s)", y_col, y_lbl)
     x_col = "ds"
@@ -263,10 +288,10 @@ def main():
     id_col = "cid_t"
     ins = []
     args_list = []
-    cid_t_li = raw_data_df["cid_t"].unique().tolist()
+    cid_t_li = data_df["cid_t"].unique().tolist()
     for cur_cid_t in cid_t_li:
         args_list.append(
-            (cur_cid_t, raw_data_df, x_col, y_col, fit_cols))
+            (cur_cid_t, data_df, x_col, y_col, fit_cols))
     chunksize = int(math.ceil(len(args_list)/float(thread_n)))
     pool_res = []
     job_star_dt = datetime.datetime.now()

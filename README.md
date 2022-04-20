@@ -9,14 +9,14 @@ For example, the overall VideoVisit of the target drama program is projected bas
 * **Objective**: Aimed at fully simulating the online program’s ![](https://latex.codecogs.com/svg.image?VideoVisit) (VV)’ ebb and flow life cycle of the [*MGTV.com*](www.mgtv.com) platform,  predicting the overall and dayly ![](https://latex.codecogs.com/svg.image?VideoVisit) count of video programs that are yet to release to prepare *CDN* and other resources in advance, so that the TOP players' solutions can be successfully applied to boost users’ watching experiences .
 
 # 数据说明
- * 训练集： 前![](https://latex.codecogs.com/svg.image?78)天每日![](https://latex.codecogs.com/svg.image?VV),
- * 测试集： 最后![](https://latex.codecogs.com/svg.image?7)天每日VV， 每个合集共![](https://latex.codecogs.com/svg.image?7)个预测结果， 一共![](https://latex.codecogs.com/svg.image?7*36) 个预测结果
+ * A榜:(https://latex.codecogs.com/svg.image?77)天每日![](https://latex.codecogs.com/svg.image?VV),
  * 评价指标： ![](https://latex.codecogs.com/svg.image?N)个节目/合集的测试集![](https://latex.codecogs.com/svg.image?mMAPE)指标平均值， 即
 ![](https://latex.codecogs.com/svg.image?mMAPE&space;=&space;\frac{&space;\sum_{i=1}^{N}&space;\frac{&space;\sum_{t=1}^{J}&space;\left|&space;\frac{\hat{y}&space;-&space;y_{t}}{y_{t}}&space;\right|&space;}{J}&space;}{N})
 其中 ![](https://latex.codecogs.com/svg.image?\hat{y})是第![](https://latex.codecogs.com/svg.image?t)天的VV预测值, ![](https://latex.codecogs.com/svg.image?y_t) 是第![](https://latex.codecogs.com/svg.image?t)天的真实![](https://latex.codecogs.com/svg.image?VV)值， ![](https://latex.codecogs.com/svg.image?N)为预测节目总数， ![](https://latex.codecogs.com/svg.image?J)为预测的最大天数/*时间窗口*
 
-## 原始赛题数据:
- * 选取规则： *TOP* 合集*VV*里面选择![](https://latex.codecogs.com/svg.image?36)个抖动较小的合集， 这![](https://latex.codecogs.com/svg.image?36)个节目平均*VV*排名*133.7*， baseline平均![](https://latex.codecogs.com/svg.image?7)日预测误差**17.65**%
+## FAQ
+* 为什么A榜只有189个节目的播放数据？
+  * &emsp;综合考虑A/B榜一致性以及实际业务需求的结果
 
 * 数据说明  
 以下数据列均经过脱敏操作  
@@ -25,6 +25,11 @@ For example, the overall VideoVisit of the target drama program is projected bas
 |:---:|:---:|:---:|:---:|:---:|
 |1|*nth_day*|日期序数|![](https://latex.codecogs.com/svg.image?1)|脱敏数据,![](https://latex.codecogs.com/svg.image?1)表示第![](https://latex.codecogs.com/svg.image?1)天|
 |2|*cid_day_vv_t*|当天节目播放数|![](https://latex.codecogs.com/svg.image?355628)|脱敏数据|
+|3|*is_holiday*|当天是否节假日|$`False`$|真实值|
+|4|*date_has_update*|当天是否有更新|$`True`$|真实值|
+|5|*vv_vid_cnt*|截止当天累计播放视频个数|$`4`$|真实值, 包括当天统计值|
+|6|*online_vid_cnt*|截止当天累计上线视频个数|$`5`$|真实值, 包括当天统计值|
+|7|*week_day*|当天星期几|$`3`$|真实值|
 |8|*seriesNo*|第几季节目|![](https://latex.codecogs.com/svg.image?9)|脱敏数据|
 |9|*cid_t*|节目标识ID|![](https://latex.codecogs.com/svg.image?29)|脱敏数据|
 |10|*seriesId_t*|节目所属IP标识ID|![](https://latex.codecogs.com/svg.image?27)|脱敏数据|
@@ -32,8 +37,8 @@ For example, the overall VideoVisit of the target drama program is projected bas
 |12|*leader_t*|节目主演标识ID|![](https://latex.codecogs.com/svg.image?34,5,41,13,25,57,29,31)|脱敏数据 多个用英文","分隔|
 |13|*kind_t*|节目类型标识ID|![](https://latex.codecogs.com/svg.image?9,3,45)|脱敏数据 多个用英文","分隔|
 
-* 测试集A：![](https://latex.codecogs.com/svg.image?36)个节目最近![](https://latex.codecogs.com/svg.image?78)天的分天VV/视频播放数，baseline ![](https://latex.codecogs.com/svg.image?mMAPE=17.48\%),[A榜赛题数据](out/comp_2022_cid_ts_vv_crypt_72in235_mape0.06-0.40_rank_a_chosen_data.tsv)
-* 测试集B：![](https://latex.codecogs.com/svg.image?36)个节目最近![](https://latex.codecogs.com/svg.image?78)天的分天VV/视频播放数, 待开放
+* A榜：![](https://latex.codecogs.com/svg.image?189)个节目最近![](https://latex.codecogs.com/svg.image?78)天的分天VV/视频播放数，baseline ![](https://latex.codecogs.com/svg.image?mMAPE=17.48\%),[A榜赛题数据](out/rank_a_data.tsv)
+* B榜：待公布
 
 ### 注意事项
 * *A*榜数据在*A*榜开放之后对参赛选手开放下载，*B*榜测试集数据*B*榜开放之后对参赛选手开放下载；
@@ -51,7 +56,7 @@ For example, the overall VideoVisit of the target drama program is projected bas
 |2|2|4.6|
 |2|3|8.6|
 
- [提交数据样例](out/comp_2022_cid_ts_vv_crypt_72in235_mape0.06-0.40_submission.tsv)  
+ [提交数据样例](out/rank_a_submission.tsv)  
  
 ### 算力要求
  1. 内存使用不超过16G 未满足以上算力限制的参赛队伍，大赛官方有权将最终总成绩判定无效，排名由后一名依次递补。
