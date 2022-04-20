@@ -55,8 +55,8 @@ For example, the overall ![](https://latex.codecogs.com/svg.image?VideoVisit) of
  [提交数据样例](out/rank_a_submission.tsv)  
  
 ## FAQ
-* 为什么A榜只有189个节目的播放数据？
-  * &emsp;综合考虑A/B榜一致性以及实际业务需求的结果
+* 为什么A榜**只**有189个节目的播放数据？
+  * &emsp;综合考虑A/B榜一致性以及实际业务中头部内容较集中的现状
 * 为什么对于相同的*cid_t*值， *leader_t*, *kind_t*都是常量？
   * &emsp; 这两列为脱敏后的节目标签， 属于ID类特征， 虽然对于同一个节目是常量， 但是**不同**节目之间不同， 待挖掘。
   
@@ -89,7 +89,7 @@ ZSH下输入
 
 ### 代码测试环境
  - OS: Ubuntu 18.04.03 LTS 
- - 内存：128G内存 实际内存消耗依赖于cli --thread参数
+ - 内存：128G内存 实际内存消耗远低于64G,  依赖于具体的cli --thread参数
  - CPU: 32核64位Intel CPU
  
 
