@@ -32,8 +32,10 @@ For example, the overall ![](https://latex.codecogs.com/svg.image?VideoVisit) of
 |12|*leader_t*|节目主演标识ID|![](https://latex.codecogs.com/svg.image?34,5,41,13,25,57,29,31)|脱敏数据 多个用英文","分隔|
 |13|*kind_t*|节目类型标识ID|![](https://latex.codecogs.com/svg.image?9,3,45)|脱敏数据 多个用英文","分隔|
 
-* A榜：189个节目最近 94天的分天VV/视频播放数，baseline ![](https://latex.codecogs.com/svg.image?mMAPE=14\%),
-* [A榜赛题数据](http://devchallenge.ai.mgtv.com/contest/detail/13?locale=zh)， MD5: 5e7eca395ef1008d4130b7d1472d1068
+* A榜：![](https://latex.codecogs.com/svg.image?9368)个节目最近 *T*天的分天VV/视频播放数，baseline ![](https://latex.codecogs.com/svg.image?mMAPE=14\%),
+* [A榜赛题数据链接](http://challenge.ai.mgtv.com/contest/detail/13?locale=zh) 
+-  &ensp; &ensp; 老数据文件rank_a_data.tsv *MD5*:**2244b45832f620cb78b344a95c5f84e5**
+-  &ensp; &ensp; 补充数据文件 rank_a_supp_data.tsv *MD5*:**09a3f99fa1a97bb637df1e0c51b402f3**
 * B榜：待公布
 
 ### 注意事项
@@ -52,7 +54,7 @@ For example, the overall ![](https://latex.codecogs.com/svg.image?VideoVisit) of
 |2|2|4.6|
 |2|3|8.6|
 
- [提交数据样例](out/rank_a_submission.tsv)  
+ [**提交数据样例**](out/reversion_rank_a_submission.tsv)  
  
 ## FAQ
 * 为什么A榜**只**有189个节目的播放数据？
@@ -92,7 +94,3 @@ ZSH下输入
  - 内存：128G内存 实际内存消耗远低于64G,  依赖于具体的cli --thread参数
  - CPU: 32核64位Intel CPU
  
-
-# Baseline预测效果展示
-  A榜Baseline预测效果演示  
-  ![A榜![](https://latex.codecogs.com/svg.image?36)个合集![](https://latex.codecogs.com/svg.image?7)天预测效果展示](png/comp_2022_cid_ts_vv_eval_movie_small.gif)
