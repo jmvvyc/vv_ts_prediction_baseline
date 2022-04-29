@@ -32,7 +32,7 @@ For example, the overall ![](https://latex.codecogs.com/svg.image?VideoVisit) of
 |12|*leader_t*|节目主演标识ID|![](https://latex.codecogs.com/svg.image?34,5,41,13,25,57,29,31)|脱敏数据 多个用英文","分隔|
 |13|*kind_t*|节目类型标识ID|![](https://latex.codecogs.com/svg.image?9,3,45)|脱敏数据 多个用英文","分隔|
 
-* A榜：![](https://latex.codecogs.com/svg.image?9368)个节目最近 *T*天的分天VV/视频播放数，baseline ![](https://latex.codecogs.com/svg.image?mMAPE=14\%),
+* A榜：![](https://latex.codecogs.com/svg.image?9368)个节目最近 *T*天的分天VV/视频播放数，baseline ![](https://latex.codecogs.com/svg.image?mMAPE=41\%),
 * [A榜赛题数据链接](http://challenge.ai.mgtv.com/contest/detail/13?locale=zh) 
 -  &ensp; &ensp; 老数据文件rank_a_data.tsv *MD5*:**2244b45832f620cb78b344a95c5f84e5**
 -  &ensp; &ensp; 补充数据文件 rank_a_supp_data.tsv *MD5*:**09a3f99fa1a97bb637df1e0c51b402f3**
@@ -57,8 +57,8 @@ For example, the overall ![](https://latex.codecogs.com/svg.image?VideoVisit) of
  [**提交数据样例**](out/reversion_rank_a_submission.tsv)  
  
 ## FAQ
-* 为什么A榜**只**有189个节目的播放数据？
-  * &emsp;综合考虑A/B榜一致性以及实际业务中头部内容较集中的现状
+* B榜数据是预测A榜相同节目往后推![](https://latex.codecogs.com/svg.image?7)天的![](https://latex.codecogs.com/svg.image?VV)吗
+  * &emsp; 是的。 B榜赛题会包括A榜赛题的答案， 并要求预测**同样**的节目往后再推![](https://latex.codecogs.com/svg.image?7)天的每日![](https://latex.codecogs.com/svg.image?VV)
 * 为什么对于相同的*cid_t*值， *leader_t*, *kind_t*都是常量？
   * &emsp; 这两列为脱敏后的节目标签， 属于ID类特征， 虽然对于同一个节目是常量， 但是**不同**节目之间不同， 待挖掘。
   
